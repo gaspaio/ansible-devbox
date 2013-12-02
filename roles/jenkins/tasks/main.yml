@@ -1,0 +1,14 @@
+---
+
+- name: Jenkins | Add Jenkins-CI debian/ubuntu signing key
+  apt_key: 
+    url=http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key 
+    state=present
+
+- name: Jenkins | Add Jenkins-CI debian/ubuntu repository
+  apt_repository: 
+    repo='deb http://pkg.jenkins-ci.org/debian binary/' 
+    state=present
+
+- name: Jenkins | Install Jenkins
+  apt: pkg=jenkins update_cache=yes

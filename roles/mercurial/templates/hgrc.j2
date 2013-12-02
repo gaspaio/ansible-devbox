@@ -1,0 +1,38 @@
+# {{ ansible_managed }}
+
+[alias]
+latest = log --limit 5
+
+
+[diff]
+# Ignore white space when comparing lines
+ignorews = TRUE
+
+# Ignore white space when comparing lines
+ignorewsamount = TRUE
+
+# Ignore changes whose lines are all blank
+ignoreblanklines = TRUE
+
+# Use git extended diff format
+git = TRUE
+
+
+[ui]
+username = {{ mercurial_username }}
+askusername = False
+debug = False
+quiet = False
+verbose = False
+
+
+[extensions]
+fetch =
+
+[auth]
+{% for authgrp in mercurial_authgroups %}
+{{ authgrp.grp }}.prefix = {{ authgrp.prefix }}
+{{ authgrp.grp }}.username = {{ authgrp.username }}
+{{ authgrp.grp }}.password = {{ authgrp.password }}
+{{ authgrp.grp }}.schemes = {{ authgrp.schemes }}
+{% endfor %}

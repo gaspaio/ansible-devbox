@@ -1,0 +1,10 @@
+
+mercurial_username: YOUR_USERNAME
+
+# # Optionnally, authentification groups can also be defined
+# mercurial_authgroups:
+# - grp: default
+#   prefix: domain
+#   username: some.user
+#   password: MJacksonIsNotDead
+#   schemes: http

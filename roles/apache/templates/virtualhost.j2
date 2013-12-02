@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+<VirtualHost {{ interfaces|default('*') }}:{{ port|default('80') }}>
+    ServerName {{ vhost }}
+
+    DocumentRoot {{ docroot }}
+    <Directory {{ docroot }}>
+        Options -Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Order allow,deny
+        allow from all
+    </Directory>
+
+    CustomLog ${APACHE_LOG_DIR}/access_{{ vhost }}.log combined
+    ErrorLog ${APACHE_LOG_DIR}/error_{{ vhost }}.log
+</VirtualHost>

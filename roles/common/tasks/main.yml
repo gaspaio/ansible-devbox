@@ -1,0 +1,41 @@
+---
+
+- name: Common | Update apt caches.
+  command: apt-get update
+
+- name: Common | Upgrade installed packages.
+  command: apt-get upgrade -y
+  when_boolean: $common_upgrade
+
+- name: Common | Set TZ config file
+  template:
+    src=timezone.j2
+    dest=/etc/timezone
+  register: tz_result
+
+# TODO: Broken in Ubuntu 12.04 - use debconf to inject configuration
+#- name: Common | Reconfigure TZ
+#  command: dpkg-reconfigure tzdata
+#  when: tz_result.changed
+
+# Configure language packs:
+# Install fr_FR locales - sudo locale-gen fr_FR fr_FR.UTF-8 & sudo dpkg-reconfigure locales
+
+- name: Common | Install 'python-apt' module
+  command: apt-get install python-apt -y
+
+- name: Common | Install misc utils
+  apt: pkg=$item state=present
+  with_items:
+  - htop
+  - curl
+  - tmux
+  - unzip
+  - python-software-properties      # Dependencies for the apt module
+  - software-properties-common
+  - vim
+
+- name: Common | Push global vimrc
+  template:
+    src=vimrc.j2
+    dest=/etc/vim/vimrc.local

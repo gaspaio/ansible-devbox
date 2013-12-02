@@ -1,0 +1,7 @@
+; {{ ansible_managed }}
+extension=apc.so
+
+apc.shm_size = {{ php_apc_shm_size|default('32M') }}
+apc.stat = {{ php_apc_stat|default('1') }}
+apc.rfc1867 = On
+apc.shm_segments = {{ php_apc_shm_segments|default('1') }}

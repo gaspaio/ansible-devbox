@@ -1,0 +1,33 @@
+
+# The default settings are optimized for a development installation.
+# You'll probably want to rethink this on a production server.
+php_memory_limit: '256M'
+php_max_execution_time: '60'
+php_max_input_time: '60'
+php_display_errors: 'On'
+php_display_startup_errors: 'On'
+php_error_reporting: 'E_ALL | E_STRICT'
+php_post_max_size: '64M'
+php_upload_max_filesize: '64M'
+php_main_timezone: 'Europe/Paris'
+
+#APC settings
+php_apc_shm_size: '32M'
+php_apc_shm_segments: 1
+php_apc_stat: 1
+
+# Xdebug settings
+php_xdebug_remote_host: '127.0.0.1'
+php_xdebug_remote_enable: 1
+
+# XHprof
+php_xhprof_output: /tmp/xhprof
+
+# FPM
+php_fpm_log_level: notice
+php_fpm_pools:
+- name: www
+  user: www-data
+  group: www-data
+  status: True    # Allow access to the status and ping URLs, at fpm-status-www and ping-www
+

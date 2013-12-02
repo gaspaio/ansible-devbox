@@ -1,0 +1,72 @@
+---
+
+- name: PHP | Install the distribution's PHP-CLI base packages
+  apt: pkg=$item state=installed force=yes
+  with_items:
+    - php5-cli
+    - php5-curl
+    - php5-gd
+    - php-apc
+
+# Install the default templates
+- name: PHP | Set php.ini CLI template
+  template:
+    src=php_cli.ini.j2
+    dest=/etc/php5/cli/php.ini
+    owner=root group=root mode=0644    
+
+- debug: msg="release = {{ansible_lsb.release}}"
+
+# APC (with php extensions directory for >= 12.10)
+- name: "PHP | Set APC config (Ubuntu >= 12.10)"
+  template:
+    src=apc.ini.j2
+    dest=/etc/php5/mods-available/apc.ini
+    owner=root group=root mode=0644
+  when: ansible_lsb.release != "12.04"
+                                      
+# APC (with php extensions directory for < 12.10)
+- name: "PHP | Set APC config (Ubuntu == 12.04)"
+  template:
+    src=apc.ini.j2
+    dest=/etc/php5/conf.d/apc.ini
+    owner=root group=root mode=0644
+  when: ansible_lsb.release == "12.04"
+
+# DEV packages and configs
+- name: PHP | PHPDev | Install PHP development packages
+  apt: pkg=$item state=installed
+  with_items:
+  - php-pear
+
+
+# PEAR Packages
+# ####################
+- name: PHP | PHPDev | Update pear packages
+  command: pear upgrade
+
+- name: PHP | PHPDev | Set pear auto-discover
+  command: pear config-set auto_discover 1
+
+- name: PHP | PHPDev | Pear install the PHP QA Toolchain
+  command: pear install pear.phpqatools.org/phpqatools creates=/usr/bin/phpunit
+  # this fails often (dns problems, pear problems, etc. So just ignore the errors and continue.)
+  ignore_errors: True
+
+
+# PECL Packages
+# #####################
+
+# XDebug
+- name: PHP | PHPDev | Fetch PHP extension dir
+  shell: "php -i | grep -i '^extension_dir' | awk '{print $3}'"
+  register: php_extension_dir
+
+- include: pecl.yml package=xdebug version=stable stdin=
+
+# Other useful tools
+# ######################
+- name: PHP | PHPDev | Install composer
+  shell:
+    curl -sS https://getcomposer.org/installer | /usr/bin/php && /bin/mv -f /home/vagrant/composer.phar /usr/local/bin/composer
+    creates=/usr/local/bin/composer

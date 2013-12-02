@@ -1,0 +1,7 @@
+---
+# Global server config
+- include: server.yml
+
+# Devmode specific configurations
+- include: dev.yml
+  when: devmode

@@ -1,0 +1,26 @@
+# {{ ansible_managed }}
+
+[user]
+name = {{ git_username }}
+email = {{ git_usermail }}
+
+[color]
+ui = true
+
+[core]
+editor = {{ git_coreeditor|default('vi') }}
+
+[push]
+default = {{ git_pushdefault|default('current') }}
+
+# Useful aliases
+# cf. https://git.wiki.kernel.org/index.php/Aliases
+[alias]
+st = status
+ci = commit
+br = branch
+co = checkout
+df = diff
+dc = diff --cached
+lg = log -p
+who = shortlog -s --

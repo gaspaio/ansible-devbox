@@ -1,0 +1,30 @@
+---
+# File: setup.yml
+# Part: Node
+#
+# Description: Install nodejs
+#
+# Parameters:
+#
+# Dependencies ([part:]type:filename):
+#
+# OS familly: Ubuntu >= 12.04
+
+- name: Add Chris-Lea nodejs repository
+  apt_repository: repo="ppa:chris-lea/node.js"
+
+- name: Install Node + NPM packages 
+  apt: pkg=$item state=present update_cache=yes
+  with_items:
+    - nodejs
+
+- name: Install npm package '$item'
+  npm: 
+    global=yes 
+    name=$item
+    state=present
+  with_items:
+    - grunt
+    - grunt-cli
+    - bower
+

@@ -1,0 +1,12 @@
+---
+- name: Hg | Install Mercurial base packages
+  apt: pkg=$item state=installed
+  with_items:
+  - mercurial
+
+# Install the default templates
+- name: Hg | Push global hgrc template
+  template:
+    src=hgrc.j2
+    dest=/etc/mercurial/hgrc
+

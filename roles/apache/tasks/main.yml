@@ -1,0 +1,60 @@
+---
+# File: setup.yml
+# Part: Apache
+#
+# Description: Install and configure an Apache server
+#
+# Parameters:
+#
+# Dependencies ([part:]type:filename):
+# - vars:main.yml
+# - handlers:handlers.yml
+#
+# OS familly: Ubuntu
+
+- name: Apache | Install Apache-$apache_flavor
+  apt: pkg=apache2-mpm-$apache_flavor state=installed
+
+# Install the default templates
+- name: Apache | Push configuration files
+  template:
+    src=${item}.j2
+    dest=/etc/apache2/$item
+    owner=root group=root mode=0644
+  with_items:
+  - envvars
+  - ports.conf
+
+# Configure a default virtual host
+- name: Apache | Create document root for default virtual host at $apache_root/default
+  file:
+    path=$apache_root/default
+    state=directory recurse=yes
+    owner=root group=root mode=0755
+
+- name: Apache | Push default index file to the docroot
+  template:
+    src=default_index.html.j2
+    dest=$apache_root/default/index.html
+
+- name: Apache | Push default virtualhost configuration template
+  template:
+    src=default_virtualhost.j2
+    dest=/etc/apache2/sites-available/default
+  notify:
+  - apache-restart
+
+- name: Apache | Remove default index file from default docroot
+  file: path=/var/www/index.html state=absent
+
+# Activate modules
+- name: Apache | Enable modules
+  command: a2enmod $item creates=/etc/apache2/mods-enabled/$item.load
+  with_items: $apache_modules
+  when: apache_modules is defined
+  notify: 
+  - apache-restart
+
+# Insure service is running.
+- name: Apache | Insure deamon is running correctly
+  service: name=apache2 state=started

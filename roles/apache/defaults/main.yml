@@ -1,0 +1,18 @@
+# File: main.yml
+# Part: Apache
+
+# Thread management
+apache_flavor: "prefork"
+
+# Httpd user and group
+apache_user: "www-data"
+apache_group: "www-data"
+
+# Default apache base directory (without trailing '/')
+apache_root: "/var/www"
+
+apache_port_http: 80
+apache_port_https: 443
+
+apache_modules:
+- rewrite
