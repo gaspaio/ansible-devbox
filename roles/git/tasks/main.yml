@@ -1,10 +1,10 @@
 ---
-- name: Git | Install git base packages
-  apt: pkg=$item state=installed
-  with_items:
-  - git-core
 
-- name: Git | Push global config file
+- name: Install git base packages
+  apt: pkg=git-core state=installed
+
+
+- name: Push global config file
   template:
     src=gitconfig.j2
     dest=/etc/gitconfig

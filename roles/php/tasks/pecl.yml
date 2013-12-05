@@ -1,39 +1,39 @@
 ---
 
-- name: PHP | PECL | Insure PHP development packages are installed
-  apt: pkg=$item state=installed
+- name: pecl | Insure PHP development packages are installed
+  apt: pkg={{ item }} state=installed
   with_items:
     - php5-dev
     - php-pear
     - make
 
-- name: PHP | PECL | Test for previous "$package" install
-  shell:  pecl list | grep -i '$package'
+- name: pecl | Test for previous "{{ package }}" install
+  shell:  pecl list | grep -i '{{ package }}'
   register: php_package_exists
   ignore_errors: yes
 
-- name: PHP | PECL | Install ${package}-${version}
-  shell: echo $stdin | pecl install ${package}-${version}
+- name: pecl | Install {{ package }}-{{ version }}
+  shell: echo {{ stdin }} | pecl install {{ package }}-{{ version }}
   when: php_package_exists|failed
 
-- name: PHP | PECL | Set $package config (Ubuntu == 12.04)
+- name: pecl | Set {{ package }} config (Ubuntu == 12.04)
   template:
-    src=${package}.ini.j2
-    dest=/etc/php5/conf.d/${package}.ini
+    src={{ package }}.ini.j2
+    dest=/etc/php5/conf.d/{{ package }}.ini
     owner=root group=root mode=0644
   when: ansible_lsb.release == "12.04"
 
-- name: PHP | PECL | Set $package config (Ubuntu > 12.04)
+- name: pecl | Set {{ package }} config (Ubuntu > 12.04)
   template:
-    src=${package}.ini.j2
-    dest=/etc/php5/mods-available/${package}.ini
+    src={{ package }}.ini.j2
+    dest=/etc/php5/mods-available/{{ package }}.ini
     owner=root group=root mode=0644
   when: ansible_lsb.release != "12.04"
 
-- name: PHP | PECL | Set symbolic link to $package config (Ubuntu > 12.04)
+- name: pecl | Set symbolic link to {{ package }} config (Ubuntu > 12.04)
   file:
-    src=/etc/php5/mods-available/${package}.ini
-    dest=/etc/php5/conf.d/20-${package}.ini
+    src=/etc/php5/mods-available/{{ package }}.ini
+    dest=/etc/php5/conf.d/20-{{ package }}.ini
     owner=root group=root state=link
   when: ansible_lsb.release != "12.04"
 

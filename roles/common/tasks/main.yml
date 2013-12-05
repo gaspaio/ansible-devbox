@@ -1,13 +1,13 @@
 ---
 
-- name: Common | Update apt caches.
+- name: Update apt caches.
   command: apt-get update
 
-- name: Common | Upgrade installed packages.
+- name: Upgrade installed packages.
   command: apt-get upgrade -y
   when_boolean: $common_upgrade
 
-- name: Common | Set TZ config file
+- name: Set TZ config file
   template:
     src=timezone.j2
     dest=/etc/timezone
@@ -21,11 +21,11 @@
 # Configure language packs:
 # Install fr_FR locales - sudo locale-gen fr_FR fr_FR.UTF-8 & sudo dpkg-reconfigure locales
 
-- name: Common | Install 'python-apt' module
+- name: Install 'python-apt' module
   command: apt-get install python-apt -y
 
-- name: Common | Install misc utils
-  apt: pkg=$item state=present
+- name: Install misc utils
+  apt: pkg={{ item }} state=present
   with_items:
   - htop
   - curl
@@ -33,9 +33,10 @@
   - unzip
   - python-software-properties      # Dependencies for the apt module
   - software-properties-common
+  - python-pycurl
   - vim
 
-- name: Common | Push global vimrc
+- name: Push global vimrc
   template:
     src=vimrc.j2
     dest=/etc/vim/vimrc.local

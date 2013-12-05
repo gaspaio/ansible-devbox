@@ -14,14 +14,12 @@
   apt_repository: repo="ppa:chris-lea/node.js"
 
 - name: Install Node + NPM packages 
-  apt: pkg=$item state=present update_cache=yes
-  with_items:
-    - nodejs
+  apt: pkg=nodejs state=present update_cache=yes
 
-- name: Install npm package '$item'
+- name: Install npm package '{{ item }}'
   npm: 
-    global=yes 
-    name=$item
+    global=yes
+    name={{ item }}
     state=present
   with_items:
     - grunt
