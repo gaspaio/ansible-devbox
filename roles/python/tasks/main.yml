@@ -1,0 +1,7 @@
+- name: Install the distribution's Python base packages
+  apt: pkg={{ item }} state=installed
+  with_items:
+  - python-dev
+  - python-pip
+  - python-virtualenv
+
