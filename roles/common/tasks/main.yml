@@ -5,7 +5,7 @@
 
 - name: Upgrade installed packages.
   command: apt-get upgrade -y
-  when_boolean: $common_upgrade
+  when: common_upgrade
 
 - name: Set TZ config file
   template:

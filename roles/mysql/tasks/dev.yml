@@ -1,10 +1,10 @@
 ---
 # Description: Set a user's default mysql-client IDs as root. DO NOT DO THIS IS A PRODUCTION SERVER.
-- name: MySQL | Dev | Config for easy access as user $devmode_user
+- name: MySQL | Dev | Config for easy access as user {{ devmode_user }}
   template:
     src=user_my.cnf.j2
-    dest=/home/$devmode_user/.my.cnf
-    owner=$devmode_user mode=0600
+    dest=/home/{{ devmode_user }}/.my.cnf
+    owner={{ devmode_user }} mode=0600
   when: devmode_user is defined
 
 - debug: msg="coucou $devmode_user"

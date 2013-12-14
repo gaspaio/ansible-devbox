@@ -16,7 +16,7 @@
 - name: Install Node + NPM packages 
   apt: pkg=nodejs state=present update_cache=yes
 
-- name: Install npm package '{{ item }}'
+- name: Install npm package {{ item }}
   npm: 
     global=yes
     name={{ item }}
