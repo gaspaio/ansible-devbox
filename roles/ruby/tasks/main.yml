@@ -1,0 +1,7 @@
+- name: Install the distribution's Ruby base packages
+  apt: pkg={{ item }} state=installed
+  with_items:
+  - ruby
+  - ruby-bundler
+  - rubygems
+

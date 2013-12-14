@@ -1,14 +1,12 @@
 ---
-# Description: Set a user's default mysql-client IDs as root. DO NOT DO THIS IS A PRODUCTION SERVER.
-- name: MySQL | Dev | Config for easy access as user {{ devmode_user }}
+# Description: Set a user's default mysql-client IDs as root.
+# DO NOT DO THIS IN A PRODUCTION SERVER.
+- name: Dev | Config for easy access as user "{{ devuser }}"
   template:
     src=user_my.cnf.j2
-    dest=/home/{{ devmode_user }}/.my.cnf
-    owner={{ devmode_user }} mode=0600
-  when: devmode_user is defined
+    dest=/home/{{ devuser }}/.my.cnf
+    owner={{ devuser }} mode=0600
+  when: devuser is defined
 
-- debug: msg="coucou $devmode_user"
-  when: devmode_user is defined
-
-- name: MySQL | Dev | Development tools for MySQL
+- name: Dev | Development tools for MySQL
   apt: pkg=percona-toolkit state=present

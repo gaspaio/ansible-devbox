@@ -1,37 +1,37 @@
 # Install server using a preseed file to set the root password
 # 1) Check is MySQL Server is already installed. If so, do not set preseed file
-- name: MySQL | Check for previous installation
+- name: Check for previous installation
   shell: "[ -f /usr/sbin/mysqld ]"
   ignore_errors: True
   register: mysqld_exists
 
 # 2) Preseed install options
-- name: MySQL | Push preseed file for debconf
+- name: Push preseed file for debconf
   template:
     src=mysql_seed.j2
     dest=/root/mysql.seed
   when: mysqld_exists|failed
 
-- name: MySQL | Preseed mysql file
+- name: Preseed mysql file
   command: /usr/bin/debconf-set-selections /root/mysql.seed
   when: mysqld_exists|failed
 
 # 3) Install
-- name: MySQL | Install server
+- name: Install server
   apt: pkg=mysql-server state=installed force=yes
   when: mysqld_exists|failed
 
-- name: MySQL | Ensure MySQL daemon is running
+- name: Ensure MySQL daemon is running
   service: name=mysql state=started
 
 # 4) Cleanup
-- name: MySQL | Delete mysql.seed file
+- name: Delete mysql.seed file
   command: /bin/rm /root/mysql.seed
   when: mysqld_exists|failed
 
 
 # Push configuration files
-- name: MySQL | set my.cnf template
+- name: Set my.cnf template
   template:
     src=my.cnf.j2
     dest=/etc/mysql/my.cnf
@@ -41,15 +41,15 @@
 
 
 # Secure installation
-- name: MySQL | Ensure python mysql is installed
+- name: Ensure python mysql is installed
   apt: pkg=python-mysqldb state=installed force=yes
 
-- name: MySQL | Remove empty password users
-  mysql_user: name='' password='' host=localhost priv=*.*:USAGE state=absent login_user=root login_password=$mysql_root_password
+- name: Remove empty password users
+  mysql_user: name='' password='' host=localhost priv=*.*:USAGE state=absent login_user=root login_password={{ mysql_root_password }}
 
-- name: MySQL | Remove empty password users
-  mysql_user: name='' password='' host=$ansible_fqdn priv=*.*:USAGE state=absent login_user=root login_password=$mysql_root_password
+- name: Remove empty password users
+  mysql_user: name='' password='' host={{ ansible_fqdn }} priv=*.*:USAGE state=absent login_user=root login_password={{ mysql_root_password }}
 
-- name: MySQL | Remove the MySQL test database
-  mysql_db: db=test state=absent login_user=root login_password=$mysql_root_password
+- name: Remove the MySQL test database
+  mysql_db: db=test state=absent login_user=root login_password={{ mysql_root_password }}
 
