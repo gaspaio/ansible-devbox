@@ -4,4 +4,10 @@
   - ruby
   - ruby-bundler
   - rubygems
+  - libxml2   # nokogiri needs this, and most applications use nokogiri
+
+# Put this is an extra file, and load a gem's dependencies before the gem itself.
+- name: Install gems
+  gem: name={{ item }} state=latest
+  with_items: ruby_gems
 

@@ -55,6 +55,6 @@
   notify: 
   - apache-restart
 
-# Insure service is running.
-- name: Apache | Insure deamon is running correctly
+# Ensure service is running.
+- name: Apache | Ensure deamon is running correctly
   service: name=apache2 state=started
