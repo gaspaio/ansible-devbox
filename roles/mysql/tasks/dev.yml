@@ -1,6 +1,7 @@
 ---
-# Description: Set a user's default mysql-client IDs as root. DO NOT DO THIS IN A PRODUCTION SERVER.
-- name: Dev | Config for easy access as user '{{ devuser }}'
+# Description: Set a user's default mysql-client IDs as root.
+# DO NOT DO THIS IN A PRODUCTION SERVER.
+- name: Dev | Config for easy access as user "{{ devuser }}"
   template:
     src=user_my.cnf.j2
     dest=/home/{{ devuser }}/.my.cnf
