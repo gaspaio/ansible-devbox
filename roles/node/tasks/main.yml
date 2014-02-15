@@ -22,7 +22,6 @@
     name={{ item }}
     state=present
   with_items:
-    - grunt
     - grunt-cli
     - bower
 
