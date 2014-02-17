@@ -1,7 +1,10 @@
-- name: Install the distribution's Ruby base packages
+// Conditionnaly include ruby install file
+
+- name: Install Ruby gem usual dependencies
   apt: pkg={{ item }} state=installed
   with_items:
-  - ruby
+  - libssl-dev
+  - zlib1g-dev
   - ruby-bundler
   - rubygems
   - libxml2   # nokogiri needs this, and most applications use nokogiri

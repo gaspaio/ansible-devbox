@@ -1,0 +1,11 @@
+---
+
+- name: Install redis server package
+  apt: pkg=redis-server state=installed
+
+- name: Push global config file
+  template:
+    src=redis.conf.j2
+    dest=/etc/redis/redis.conf
+  notify:
+    - redis-restart
