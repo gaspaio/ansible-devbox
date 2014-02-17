@@ -40,3 +40,7 @@
   template:
     src=vimrc.j2
     dest=/etc/vim/vimrc.local
+
+- name: Set vim as default editor
+  command: update-alternatives --set editor /usr/bin/vim.basic
+
