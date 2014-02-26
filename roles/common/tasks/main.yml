@@ -18,8 +18,8 @@
 #  command: dpkg-reconfigure tzdata
 #  when: tz_result.changed
 
-# Configure language packs:
-# Install fr_FR locales - sudo locale-gen fr_FR fr_FR.UTF-8 & sudo dpkg-reconfigure locales
+- name: Configure language packs
+  shell: locale-gen fr_FR fr_FR.UTF-8 && dpkg-reconfigure locales
 
 - name: Install 'python-apt' module
   command: apt-get install python-apt -y
