@@ -6,7 +6,7 @@
 - name: Set Timezone (CentOS)
   command: "cp /usr/share/zoneinfo/{{ common_tz }} /etc/localtime"
 
-- name: install misc utils (CentOS)
+- name: Install misc utils (CentOS)
   yum: name={{ item }} state=present
   with_items:
   - libselinux-python       # Dependency for all ansible file modules

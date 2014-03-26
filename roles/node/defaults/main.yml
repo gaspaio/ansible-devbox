@@ -1,0 +1,5 @@
+
+node_install_from: sources  # or 'sources'
+node_version: 0.11.9   # format: 0.10.4 , ...
+node_src_baseurl: http://nodejs.org/dist/
+
