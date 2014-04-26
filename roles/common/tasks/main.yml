@@ -1,42 +1,12 @@
 ---
 
-- name: Update apt caches.
-  command: apt-get update
+- include: main_centos.yml
+  when: ansible_distribution == "CentOS"
 
-- name: Upgrade installed packages.
-  command: apt-get upgrade -y
-  when: common_upgrade
-
-- name: Set TZ config file
-  template:
-    src=timezone.j2
-    dest=/etc/timezone
-  register: tz_result
-
-# TODO: Broken in Ubuntu 12.04 - use debconf to inject configuration
-#- name: Common | Reconfigure TZ
-#  command: dpkg-reconfigure tzdata
-#  when: tz_result.changed
-
-# Configure language packs:
-# Install fr_FR locales - sudo locale-gen fr_FR fr_FR.UTF-8 & sudo dpkg-reconfigure locales
-
-- name: Install 'python-apt' module
-  command: apt-get install python-apt -y
-
-- name: Install misc utils
-  apt: pkg={{ item }} state=present
-  with_items:
-  - htop
-  - curl
-  - tmux
-  - unzip
-  - python-software-properties      # Dependencies for the apt module
-  - software-properties-common
-  - python-pycurl
-  - vim
+- include: main_ubuntu.yml
+  when: ansible_distribution == "Ubuntu"
 
 - name: Push global vimrc
   template:
     src=vimrc.j2
-    dest=/etc/vim/vimrc.local
+    dest=/home/{{ ansible_ssh_user }}/.vimrc

@@ -1,0 +1,4 @@
+sudo add-apt-repository ppa:brightbox/ruby-ng-experimental
+sudo apt-get update
+sudo apt-get install -y ruby2.0 ruby2.0-dev ruby2.0-doc
+

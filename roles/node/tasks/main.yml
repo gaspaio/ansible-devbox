@@ -1,27 +1,22 @@
 ---
-# File: setup.yml
-# Part: Node
-#
-# Description: Install nodejs
-#
-# Parameters:
-#
-# Dependencies ([part:]type:filename):
-#
-# OS familly: Ubuntu >= 12.04
 
-- name: Add Chris-Lea nodejs repository
-  apt_repository: repo="ppa:chris-lea/node.js"
+- name: Check for previous installation of Node
+  shell: "[ -f /usr/local/bin/node ]"
+  ignore_errors: True
+  register: node_exists
 
-- name: Install Node + NPM packages 
-  apt: pkg=nodejs state=present update_cache=yes
+- include: main_centos.yml
+  when: ansible_distribution == "CentOS" and node_exists|failed
+
+- include: main_ubuntu.yml
+  when: ansible_distribution == "Ubuntu" and node_exists|failed
 
 - name: Install npm package {{ item }}
-  npm: 
+  npm:
     global=yes
     name={{ item }}
+    executable=/usr/local/bin/npm
     state=present
   with_items:
     - grunt-cli
     - bower
-

@@ -1,0 +1,38 @@
+---
+
+- name: Install 'python-apt' module (Ubuntu)
+  command: apt-get install python-apt -y
+
+- name: Upgrade all packages (Ubuntu)
+  apt: upgrade=yes update_cache=yes
+  when: common_upgrade
+
+- name: Set TZ config file (Ubuntu)
+  template:
+    src=timezone.j2
+    dest=/etc/timezone
+  register: tz_result
+
+# TODO: Broken in Ubuntu 12.04 - use debconf to inject configuration
+#- name: Common | Reconfigure TZ
+#  command: dpkg-reconfigure tzdata
+#  when: tz_result.changed
+
+- name: Configure language packs (Ubuntu)
+  shell: locale-gen fr_FR fr_FR.UTF-8 && dpkg-reconfigure locales
+
+- name: Install misc utils (Ubuntu)
+  apt: pkg={{ item }} state=present
+  with_items:
+  - htop
+  - curl
+  - tmux
+  - unzip
+  - python-software-properties      # Dependencies for the apt module
+  - software-properties-common
+  - python-pycurl
+  - vim
+
+- name: Set vim as default editor (Ubuntu)
+  command: update-alternatives --set editor /usr/bin/vim.basic
+

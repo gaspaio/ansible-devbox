@@ -1,0 +1,10 @@
+---
+# Install from packages only.
+
+- name: Add Chris-Lea nodejs repository
+  apt_repository: repo="ppa:chris-lea/node.js"
+
+- name: Install Node + NPM packages
+  apt: pkg=nodejs state=present update_cache=yes
+
+

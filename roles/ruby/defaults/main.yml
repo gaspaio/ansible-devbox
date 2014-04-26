@@ -1,3 +1,4 @@
 ---
+ruby_version: 'default' # for default, 2.0 for ruby2.0 package
 ruby_gems:
 - rake

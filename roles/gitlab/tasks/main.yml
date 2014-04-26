@@ -1,0 +1,25 @@
+- name: Install dependencies
+  apt: pkg={{ item }} state=present
+  with_items:
+  - build-essential
+  - zlib1g-dev
+  - libyaml-dev
+  - libssl-dev
+  - libgdbm-dev
+  - libreadline-dev
+  - libncurses5-dev
+  - libffi-dev
+  - checkinstall
+  - libxml2-dev
+  - libxslt1-dev
+  - libcurl4-openssl-dev
+  - libicu-dev
+  - python-docutils
+
+  # Already in Ubuntu 12.04
+  - logrotate
+  - curl
+  - openssh-server
+
+  # Via role dependency
+  - redis-server

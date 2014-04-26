@@ -1,0 +1,41 @@
+---
+# Install from sources only.
+
+# Needs :
+# - node_version
+# - node_src_baseurl
+
+- name: Install dev tools (CentOS)
+  yum: name={{ item }} state=present
+  with_items:
+  - gcc
+  - gcc-c++
+  - automake
+  - autoconf
+  - make
+
+- name: Fetch node archive (CentOS)
+  get_url:
+    url={{ node_src_baseurl }}v{{ node_version }}/node-v{{ node_version }}.tar.gz
+    dest=/tmp/node.tar.gz
+
+- name: Unarchive node sources (CentOS)
+  unarchive:
+    src=/tmp/node.tar.gz
+    dest=/tmp
+    copy=no
+
+- name: "Compile and install node (CentOS)"
+  shell:
+    ./configure && make && sudo make install
+    chdir=/tmp/node-v{{ node_version }}
+    creates=/usr/local/bin/node
+
+- name: "Remove node sources (CentOS)"
+  file: path=/tmp/{{ item }} state=absent
+  with_items:
+  - node.tar.gz
+  - node-v{{ node_version }}
+
+
+

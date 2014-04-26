@@ -1,0 +1,20 @@
+---
+- name: Upgrade all packages (CentOS)
+  yum: name=* state=latest
+  when: common_upgrade
+
+- name: Set Timezone (CentOS)
+  command: "cp /usr/share/zoneinfo/{{ common_tz }} /etc/localtime"
+
+- name: Install misc utils (CentOS)
+  yum: name={{ item }} state=present
+  with_items:
+  - libselinux-python       # Dependency for all ansible file modules
+  - curl
+  - unzip
+  - pycurl
+  - vim
+
+- name: Set vim as default editor (CentOS)
+  copy: content="export EDITOR=\"nano\"" dest=/etc/profile.d/editor.sh
+
