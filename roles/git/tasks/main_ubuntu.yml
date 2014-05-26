@@ -1,0 +1,5 @@
+---
+
+- name: Install git base packages (Ubuntu)
+  apt: pkg=git-core state=installed
+

@@ -1,0 +1,6 @@
+---
+
+- name: Install git base packages (CentOS)
+  yum: name=git state=present
+
+

@@ -1,8 +1,10 @@
 ---
 
-- name: Install git base packages
-  apt: pkg=git-core state=installed
+- include: main_centos.yml
+  when: ansible_distribution == "CentOS"
 
+- include: main_ubuntu.yml
+  when: ansible_distribution == "Ubuntu"
 
 - name: Push global config file
   template:

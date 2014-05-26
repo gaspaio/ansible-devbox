@@ -7,14 +7,30 @@ email = {{ git_usermail }}
 [color]
 ui = true
 
+[color "branch"]
+current = yellow reverse
+local = yellow
+remote = green
+
+[color "diff"]
+meta = cyan bold
+frag = yellow
+old = red
+new = green
+
+[color "status"]
+added = green
+changed = red
+untracked = cyan
+
 [core]
 editor = {{ git_coreeditor|default('vi') }}
+autocrlf = input
+safecrlf = true
 
 [push]
 default = {{ git_pushdefault|default('current') }}
 
-# Useful aliases
-# cf. https://git.wiki.kernel.org/index.php/Aliases
 [alias]
 st = status
 ci = commit
@@ -23,4 +39,6 @@ co = checkout
 df = diff
 dc = diff --cached
 lg = log -p
+logp = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
 who = shortlog -s --
+
