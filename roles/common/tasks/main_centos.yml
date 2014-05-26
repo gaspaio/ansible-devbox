@@ -6,7 +6,7 @@
   command: "rpm -Uvh {{ common_centos_epel }} creates=/etc/yum.repos.d/epel.repo"
 
 - name: Import RPMForge key (CentOS)
-  rpm_key: state=present key=http://apt.sw.be/RPM-GPG-KEY.dag.txt
+  command: "rpm --import http://apt.sw.be/RPM-GPG-KEY.dag.txt"
 
 - name: Verify RPMForge package (CentOS)
   command: "rpm -K {{ common_centos_rpmforge }} creates=/etc/yum.repos.d/rpmforge.repo"
