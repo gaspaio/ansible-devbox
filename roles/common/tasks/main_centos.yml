@@ -1,19 +1,37 @@
 ---
+- name: Set Timezone (CentOS)
+  command: "cp /usr/share/zoneinfo/{{ common_tz }} /etc/localtime"
+
+- name: Install EPEL releases (CentOS)
+  command: "rpm -Uvh {{ common_centos_epel }} creates=/etc/yum.repos.d/epel.repo"
+
+- name: Import RPMForge key (CentOS)
+  rpm_key: state=present key=http://apt.sw.be/RPM-GPG-KEY.dag.txt
+
+- name: Verify RPMForge package (CentOS)
+  command: "rpm -K {{ common_centos_rpmforge }} creates=/etc/yum.repos.d/rpmforge.repo"
+
+- name: Install RPMForge package (CentOS)
+  command: "rpm -i {{ common_centos_rpmforge }} creates=/etc/yum.repos.d/rpmforge.repo"
+
+- name: Yum clean (CentOS)
+  command: "yum clean all"
+
 - name: Upgrade all packages (CentOS)
   yum: name=* state=latest
   when: common_upgrade
 
-- name: Set Timezone (CentOS)
-  command: "cp /usr/share/zoneinfo/{{ common_tz }} /etc/localtime"
-
 - name: Install misc utils (CentOS)
   yum: name={{ item }} state=present
   with_items:
+  - man
+  - man-pages
   - libselinux-python       # Dependency for all ansible file modules
   - curl
   - unzip
   - pycurl
   - vim
+  - htop
 
 - name: Set vim as default editor (CentOS)
   copy: content="export EDITOR=\"nano\"" dest=/etc/profile.d/editor.sh

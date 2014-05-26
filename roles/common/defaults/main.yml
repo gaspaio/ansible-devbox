@@ -1,3 +1,6 @@
 ---
 common_upgrade: true
 common_tz: "Europe/Paris"
+
+common_centos_epel: "http://dl.fedoraproject.org/pub/epel/6/{{ ansible_architecture }}/epel-release-6-8.noarch.rpm"
+common_centos_rpmforge: "http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.{{ ansible_architecture }}.rpm"
