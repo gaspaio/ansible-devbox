@@ -9,4 +9,4 @@
 - name: Push global vimrc
   template:
     src=vimrc.j2
-    dest=/home/{{ ansible_ssh_user }}/.vimrc
+    dest={{ ansible_env.HOME }}/.vimrc
